@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#ffd36e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Number Friends">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="description" content="A gentle number game for 4–6 year olds.">
+<link rel="preload" href="assets/audio/manifest.json" as="fetch" crossorigin>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<title>Number Friends</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/premium.css">
+
+</head>
+<body>
+<div class="scenery" aria-hidden="true">
+  <div class="cloud c1"></div><div class="cloud c2"></div><div class="ground"></div>
+</div>
+
+<div class="app">
+  <header class="topbar">
+    <button id="backBtn" class="icon-btn hidden" aria-label="Back — press and hold">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      <span class="hold-ring"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="20"/></svg></span>
+    </button>
+    <div class="brand" id="topTitle">Number Friends</div>
+    <div class="starbox" id="jarTop" aria-label="Star jar"></div>
+    <button id="musicBtn" class="icon-btn" aria-label="Music on or off">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.6"/><circle cx="16.5" cy="16" r="2.6"/></svg>
+    </button>
+    <button id="fsBtn" class="icon-btn" aria-label="Full screen">
+      <svg id="fsOn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V5.5A1.5 1.5 0 015.5 4H9"/><path d="M15 4h3.5A1.5 1.5 0 0120 5.5V9"/><path d="M20 15v3.5a1.5 1.5 0 01-1.5 1.5H15"/><path d="M9 20H5.5A1.5 1.5 0 014 18.5V15"/></svg>
+      <svg id="fsOff" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v3.5A1.5 1.5 0 017.5 9H4"/><path d="M20 9h-3.5A1.5 1.5 0 0115 7.5V4"/><path d="M15 20v-3.5a1.5 1.5 0 011.5-1.5H20"/><path d="M4 15h3.5A1.5 1.5 0 019 16.5V20"/></svg>
+    </button>
+    <button id="muteBtn" class="icon-btn" aria-label="Voice on or off">
+      <svg id="sndOn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 010 7"/><path d="M18.5 5.5a9 9 0 010 13"/></svg>
+      <svg id="sndOff" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M16 9l5 6M21 9l-5 6"/></svg>
+    </button>
+  </header>
+
+  <main>
+    <!-- MAP -->
+    <section class="screen active" id="s-map">
+      <div class="hometop">
+        <div class="jarwrap" id="mapJar"></div>
+        <button class="pillbtn" id="stickersBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 8.7l5.4-.8z"/></svg>
+          Stickers
+        </button>
+      </div>
+      <div class="playwrap">
+        <button class="playbtn" id="playBtn" aria-label="Play"></button>
+      </div>
+      <div class="trail" id="trail"></div>
+      <button class="installbtn hidden" id="installBtn" aria-label="Install the app"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg><span>Install app</span></button>
+      <button class="grownbtn" id="grownBtn">For grown-ups — press and hold
+        <span class="hold-ring"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="20"/></svg></span>
+      </button>
+    </section>
+
+    <!-- PLAY -->
+    <section class="screen" id="s-play">
+      <div class="dots" id="dots"></div>
+      <div class="promptbar">
+        <div class="q" id="qText">Let's play!</div>
+        <button id="sayBtn" class="saybig" aria-label="Say it again">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 010 7"/><path d="M18.5 5.5a9 9 0 010 13"/></svg>
+        </button>
+      </div>
+      <div class="stage" id="stage"></div>
+      <div class="choices" id="choices"></div>
+    </section>
+
+    <!-- STICKERS -->
+    <section class="screen" id="s-stickers">
+      <div class="stick-head">Stickers</div>
+      <div class="sticker-grid" id="stickerGrid"></div>
+      <div class="stick-head" style="font-size:19px">Dress up</div>
+      <div class="dress-row" id="dressRow"></div>
+    </section>
+
+    <!-- STAGE DONE -->
+    <section class="screen" id="s-done">
+      <h2 id="doneTitle">Stage complete!</h2>
+      <div id="doneSticker">
+        <div class="stk" id="doneStickerArt"></div>
+        <div class="lab">New sticker!</div>
+      </div>
+      <div class="donestars" id="doneStars">
+        <svg viewBox="0 0 24 24" fill="#f7b731"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+        <svg viewBox="0 0 24 24" fill="#f7b731"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+        <svg viewBox="0 0 24 24" fill="#f7b731"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+      </div>
+      <p class="donetxt" id="doneTxt"></p>
+      <div class="donebtns">
+        <button class="bigbtn" id="nextStageBtn">Next stage</button>
+        <button class="bigbtn plain" id="againBtn">Play this stage again</button>
+      </div>
+    </section>
+
+    <!-- GROWN UPS -->
+    <section class="screen" id="s-grown">
+      <h2>For grown-ups</h2>
+      <div class="panel">
+        <h3>How the stages build up</h3>
+        <ol>
+          <li><b>Count to 5</b> — one tap per block, one number per tap. One-to-one counting.</li>
+          <li><b>Quick look</b> — dots flash for a second and a half, then vanish. This is subitising: seeing "four" without counting. Getting it wrong shows the dots again and counts them.</li>
+          <li><b>Find the number</b> — the numeral is given and she picks the matching group. Groups appear as towers, scattered blocks, dice dots, ten-frames or everyday objects, so the answer can't come from height alone.</li>
+          <li><b>More or fewer</b> — comparing two groups, again in mixed arrangements. Sometimes the bigger number is deliberately shown in the shorter, more spread-out arrangement. About one question in five has two equal groups in different arrangements, with a "Same" button as a third choice.</li>
+          <li><b>Count to 10</b> — same counting skill, bigger groups and mixed arrangements. After a correct answer here and in Count to 5, about one time in three the numeral appears as a dotted path with a start dot and she traces it with a finger. A small Skip button sits at the bottom for you.</li>
+          <li><b>Number track</b> — a winding track of ten squares (twenty once she is flying). She spins for one to three steps, taps her piece that many times and counts on from where she stands ("five, six, seven"). Then she says which number she is on, and every other turn which number is one more. Reaching the end finishes the stage.</li>
+          <li><b>Build the number</b> — she adds and takes blocks off freely, then taps Done. Only Done checks, so she has to count for herself.</li>
+          <li><b>Make 5</b> — number bonds, the idea underneath addition.</li>
+          <li><b>Make 10</b> — a ten-frame with some dots already there; she works out how many more are needed. The missing dots fill in one at a time on success.</li>
+          <li><b>Adding up</b> — two groups joined, then counted. From the third question the first group is a numeral instead of blocks, and the tower is counted on from that number ("four… five, six").</li>
+          <li><b>Doubles</b> — two equal groups, the pattern behind 3+3, 4+4 and the rest. The two towers merge and are counted once.</li>
+          <li><b>Take away</b> — subtraction as removing, then counting what stays. Sometimes everything goes, so she meets zero.</li>
+          <li><b>Story time</b> — a short spoken number story with a picture ("Four birds sit on a branch. One flies away. How many now?"), adding or taking away within ten. The speaker button in the prompt bar reads the story again.</li>
+          <li><b>What comes next?</b> — number order and patterns.</li>
+          <li><b>Patterns</b> — repeating colour and shape patterns (AB, AAB, ABC) with the next one missing, then two sorting rounds: she taps an object, taps its basket, and says how many are in each.</li>
+          <li><b>Number neighbours</b> — the number before, after or between, in numerals only.</li>
+          <li><b>Bigger number</b> — two numerals and no blocks at all. Choosing right reveals the blocks so she can check. It sometimes asks which number is <i>smaller</i>, and about one question in six shows the same number twice with a "Same" button.</li>
+          <li><b>Teen numbers</b> — a full ten-frame plus the extras, 11 to 20.</li>
+          <li><b>Big mix</b> — a little of everything, to keep it fresh.</li>
+        </ol>
+        <p style="margin-top:8px">Every number keeps one colour throughout (a tower of five is always the same blue), so the colours become a second, quieter way of knowing the number.</p>
+      </div>
+      <div class="panel">
+        <h3>How the game behaves</h3>
+        <ul>
+          <li>Five questions per stage. Short is better than long.</li>
+          <li>A wrong answer greys out and cannot be tapped again in that question, so she cannot guess her way through.</li>
+          <li>There is never a "wrong" screen — only a gentle "try again".</li>
+          <li>After two tries the game shows the answer and counts it out loud: the blocks fill in, the tower is counted, or the right button pulses.</li>
+          <li>Two stars or more opens the next stage. A one-star finish stays open so she can play it again.</li>
+          <li>Build the number lets her add up to three blocks too many, and nothing happens until she taps Done.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Her name</h3>
+        <p>Used now and then when the game praises her, and in the goodbye summary.</p>
+        <div class="nameline">
+          <input id="nameInput" type="text" maxlength="14" placeholder="e.g. Maya" aria-label="Child's name">
+          <button class="minibtn" id="nameSave">Save</button>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Voice</h3>
+        <p>The game speaks with a warm, natural recorded voice that works offline. You can switch to one of your phone's own voices here if you prefer.</p>
+        <div class="row">
+          <select id="voiceSel" aria-label="Voice"></select>
+          <button class="minibtn" id="testVoice">Hear it</button>
+        </div>
+        <label class="chk"><input type="checkbox" id="sfxChk" checked> Sound effects (pops and chimes)</label>
+        <p id="noVoice" class="hidden" style="margin-top:8px;color:#a33">This browser has no speech engine, so the game will be silent. The words still appear on screen. Opening the game in Chrome or Safari usually brings the voice back.</p>
+      </div>
+      <div class="panel">
+        <h3>The whole course</h3>
+        <p>Every stage in order. <b>Play now</b> jumps straight in; <b>Unlock</b> opens a stage without her having to earn it.</p>
+        <div class="course" id="course"></div>
+      </div>
+      <div class="panel">
+        <h3>Try this at home</h3>
+        <p id="dashHome"></p>
+      </div>
+      <div class="panel">
+        <h3>Progress</h3>
+        <p class="dash-line" id="dashJars" style="margin-top:2px"></p>
+        <p class="dash-line" id="dashMastered"></p>
+        <div class="dash-stars" id="dashStars"></div>
+        <p class="dash-line" id="dashWorking"></p>
+        <p class="dash-line" id="dashTime"></p>
+        <h3 style="margin-top:12px">Numbers, at a glance</h3>
+        <div class="dash-nums" id="dashNums"></div>
+        <p class="dash-legend">Grey means not tried yet. Green is going well, red needs another go.</p>
+      </div>
+      <div class="panel" id="installPanel">
+        <h3>Install on this phone</h3>
+        <p>Install Number Friends as an app: it opens full screen from its own icon and works with no internet.</p>
+        <div class="row"><button class="minibtn" id="installBtn2">Install app</button></div>
+        <p id="installDone" class="hidden" style="margin-top:8px;color:#2e7d32"><b>Installed.</b> You are using the app version.</p>
+      </div>
+      <div class="panel">
+        <h3>Start over</h3>
+        <div class="row">
+          <button class="minibtn warn" id="resetBtn">Reset all stars</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="modal" id="carryModal">
+  <div class="modal-card">
+    <div class="modal-title">Carry on?</div>
+    <div class="modal-sub" id="carrySub"></div>
+    <button class="bigbtn" id="carryYes">Carry on</button>
+    <button class="bigbtn plain" id="carryNo">Start again</button>
+  </div>
+</div>
+<div class="modal" id="iosModal">
+  <div class="modal-card">
+    <div class="modal-title">Add to Home Screen</div>
+    <div class="ios-steps">
+      <div class="ios-step"><span class="ios-n">1</span><span>Tap the <b>Share</b> button <svg class="ios-share" viewBox="0 0 24 24" fill="none" stroke="#1b7cf2" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/></svg> in Safari</span></div>
+      <div class="ios-step"><span class="ios-n">2</span><span>Scroll and tap <b>Add to Home Screen</b> <span class="ios-plus">＋</span></span></div>
+      <div class="ios-step"><span class="ios-n">3</span><span>Tap <b>Add</b>. The game appears on your home screen.</span></div>
+    </div>
+    <button class="bigbtn" id="iosOk">Got it</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="confetti" id="confetti"></div>
+
+<script src="js/game.js"></script>
+<script src="js/pwa.js"></script>
+
+</body>
+</html>
