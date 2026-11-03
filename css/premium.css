@@ -49,7 +49,9 @@ input,select,textarea{user-select:text;-webkit-user-select:text;font-size:16px}
 .stone{width:62px;height:62px;transition:transform .25s var(--spring)}
 .stone:active{scale:.92}
 /* install button: parent-facing, top-left of home, clear but calm */
-.installbtn{position:absolute;left:12px;top:4px;z-index:3;display:flex;align-items:center;gap:6px;
+.parentrow{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;padding:0 10px calc(6px + var(--safe-b))}
+.parentrow .grownbtn{margin:0}
+.installbtn{position:relative;flex:0 0 auto;display:flex;align-items:center;gap:6px;
   min-height:44px;padding:0 14px 0 10px;border:none;border-radius:999px;cursor:pointer;font-family:inherit;font-weight:800;font-size:14px;
   color:#fff;background:linear-gradient(180deg,#5aa9ff,#2f7fe0);box-shadow:0 4px 0 #1f5fb0,0 8px 16px rgba(47,127,224,.3);overflow:hidden}
 .installbtn svg{width:20px;height:20px}
