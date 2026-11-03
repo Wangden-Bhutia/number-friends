@@ -102,3 +102,8 @@ input,select,textarea{user-select:text;-webkit-user-select:text;font-size:16px}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
 }
+/* trace v3: ordered checkpoints */
+.trace-svg .trail{stroke-width:5 !important;opacity:.85}
+.trace-svg .cp{fill:#9fb3cc;transition:fill .15s}
+.trace-svg .cp.hit{fill:#4cbf6b}
+.trace-svg .cp.nextcp{fill:#ff8a00;r:4.2;animation:pulsePiece 1s ease-in-out infinite;transform-box:fill-box;transform-origin:center}

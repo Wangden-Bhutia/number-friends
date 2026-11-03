@@ -2936,7 +2936,17 @@ function showTrace(num,done){
     var steps=Math.max(24,Math.round(L/6));
     for(var i=0;i<=steps;i++) samples.push(p.getPointAtLength(L*i/steps));
   });
-  var covered=samples.map(function(){ return false; });
+  // ordered checkpoints: she must pass them in order along the path
+  var next=0, cps=[];
+  samples.forEach(function(q,i){
+    var c=document.createElementNS(NS,'circle');
+    c.setAttribute('class','cp'); c.setAttribute('r','2.6');
+    c.setAttribute('cx',q.x); c.setAttribute('cy',q.y);
+    svg.appendChild(c); cps.push(c);
+  });
+  function markNext(){
+    cps.forEach(function(c,i){ c.setAttribute('class', i<next?'cp hit':(i===next?'cp nextcp':'cp')); });
+  }
 
   var dot=document.createElementNS(NS,'circle');
   dot.setAttribute('class','startdot pulse');
@@ -2944,6 +2954,7 @@ function showTrace(num,done){
   dot.setAttribute('cx',samples[0].x);
   dot.setAttribute('cy',samples[0].y);
   svg.appendChild(dot);
+  markNext();
 
   setPrompt('Trace the '+num,'Trace the number '+WORDS[num]+'. Start at the dot.');
   speak('Trace the number '+WORDS[num]+'. Start at the yellow dot.',{rate:0.9});
@@ -2967,14 +2978,16 @@ function showTrace(num,done){
     var p=toSvg(e);
     pts.push(Math.round(p.x)+','+Math.round(p.y));
     trail.setAttribute('points',pts.join(' '));
-    var R=13;
-    for(var i=0;i<samples.length;i++){
-      if(covered[i]) continue;
-      var dx=samples[i].x-p.x, dy=samples[i].y-p.y;
-      if(dx*dx+dy*dy<R*R) covered[i]=true;
+    var R=12, LOOK=3, adv=true;
+    while(adv && next<samples.length){
+      adv=false;
+      for(var j=next;j<Math.min(samples.length,next+LOOK+1);j++){
+        var dx=samples[j].x-p.x, dy=samples[j].y-p.y;
+        if(dx*dx+dy*dy<R*R){ next=j+1; adv=true; break; }
+      }
     }
-    var hit=covered.filter(Boolean).length;
-    if(hit>=samples.length*0.7) finish(true);
+    markNext();
+    if(next>=samples.length) finish(true);
   }
   function onDown(e){
     if(finished) return;
@@ -3582,4 +3595,5 @@ try{
 }catch(e){}
 updateFsIcon();
 
+window.__nfShowTrace=showTrace;
 })();
